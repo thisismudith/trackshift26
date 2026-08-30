@@ -221,6 +221,11 @@
   #cfPanel tr.rec td:first-child{color:var(--volt);font-weight:700}
   #cfPanel tr.dead td{opacity:.45;text-decoration:line-through}
   #cfPanel .resume{font-family:var(--mono);font-size:11px;color:var(--volt);margin-top:12px;letter-spacing:.14em}
+  .scntabs{position:absolute;top:14px;right:14px;z-index:6;display:flex;gap:8px}
+  .scntab{font-family:var(--mono);font-size:10px;letter-spacing:.14em;padding:8px 14px;border-radius:8px;cursor:pointer;
+    background:var(--panel2);color:var(--dim);border:1px solid var(--line2);transition:all .25s}
+  .scntab:hover{border-color:var(--cyan);color:var(--cyan)}
+  .scntab.active{border-color:var(--volt);color:var(--volt);background:rgba(184,255,46,.08)}
   #toast{position:absolute;top:18px;left:50%;transform:translate(-50%,-10px);background:rgba(184,255,46,.1);border:1px solid rgba(184,255,46,.4);
     color:var(--volt);font-family:var(--mono);font-size:13px;letter-spacing:.1em;padding:12px 24px;border-radius:10px;z-index:6;
     opacity:0;transition:all .4s;white-space:nowrap}
@@ -325,7 +330,7 @@
       It is <b>what the next 0.1&nbsp;MJ is worth</b> — against this rival, at this corner, under today's rules.</div>
     <div class="rv" style="--d:.5s"><button class="apbtn" id="apStart">▶&nbsp;&nbsp;AUTOPILOT PRESENTATION</button>
       <div class="aphint">SIT BACK — SLIDES, DEMO, CURSOR &amp; NARRATION RUN THEMSELVES · ESC STOPS · BEST VOICES IN EDGE</div></div>
-    <div class="cov-foot rv" style="--d:.6s">TEAM EDELTA&nbsp;&nbsp;·&nbsp;&nbsp;FINAL SUBMISSION&nbsp;&nbsp;·&nbsp;&nbsp;OR PRESS ↓ TO PRESENT MANUALLY</div>
+    <div class="cov-foot rv" style="--d:.6s">TEAM EDELTA&nbsp;&nbsp;·&nbsp;&nbsp;IDEA SUBMISSION · 24-HOUR BUILD PLAN&nbsp;&nbsp;·&nbsp;&nbsp;OR PRESS ↓ TO PRESENT MANUALLY</div>
   </div>
 </section>
 
@@ -379,8 +384,9 @@
 <section class="slide" id="s3">
   <div class="glow" style="width:600px;height:600px;background:var(--cyan);bottom:-220px;left:30%"></div>
   <div class="inner">
-    <div class="kicker rv"><span class="n">03</span>HOW IT WORKS</div>
+    <div class="kicker rv"><span class="n">03</span>WHAT WE'LL BUILD</div>
     <h2 class="rv" style="--d:.08s">Real replay in. Legal recommendation out.</h2>
+    <p class="sub rv" style="--d:.12s">The architecture we will build in the 24-hour window — deliberately bounded so every piece is finishable and testable.</p>
     <div class="pipe rv" style="--d:.2s">
       <div class="pstack">
         <div class="pnode"><span class="tag">INPUT · OBSERVED</span><h4>Telemetry replay</h4><p>2026 British GP Sprint, distance-indexed every 20 m (TracingInsights)</p></div>
@@ -412,7 +418,7 @@
   <div class="inner">
     <div class="kicker rv"><span class="n">04</span>THE RULE ENGINE</div>
     <h2 class="rv" style="--d:.08s">Illegal actions never reach the planner.</h2>
-    <p class="sub rv" style="--d:.14s">Legality is a <b style="color:var(--red)">hard action mask</b>, not a penalty term — implemented from the current FIA regulations and unit-tested at the exact boundaries.</p>
+    <p class="sub rv" style="--d:.14s">Legality is a <b style="color:var(--red)">hard action mask</b>, not a penalty term — to be implemented straight from the current FIA regulations and unit-tested at the exact boundaries.</p>
     <div class="rulewrap">
       <div>
       <pre class="yaml rv" style="--d:.22s"><span class="c"># rules_2026.yaml</span>
@@ -427,9 +433,10 @@
   - <span class="v">safety_car</span>
   - <span class="v">low_grip</span>
   - <span class="v">race_director_disabled</span></pre>
+        <div class="rv" style="--d:.42s;font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--faint);margin-top:20px">PLANNED PYTEST BOUNDARY TESTS</div>
         <div class="btests rv" style="--d:.44s">
-          <span class="btest">✓ 290</span><span class="btest">✓ 340</span><span class="btest">✓ 345</span>
-          <span class="btest">✓ 350</span><span class="btest">✓ 355 km/h</span><span class="btest">✓ recharge cap</span><span class="btest">✓ line boundary</span>
+          <span class="btest">290</span><span class="btest">340</span><span class="btest">345</span>
+          <span class="btest">350</span><span class="btest">355 km/h</span><span class="btest">recharge cap</span><span class="btest">line boundary</span>
         </div>
         <div class="rulefacts rv" style="--d:.5s">
           <span><b>350 kW</b> ERS-K DC ceiling</span><span><b>4.0 MJ</b> on-track ES SOC max–min window</span><span><b>8.5 MJ</b> nominal recharge / lap</span>
@@ -437,7 +444,7 @@
       </div>
       <div>
         <div class="maskdemo rv" style="--d:.3s">
-          <h4>ACTION MASK · LIVE EXAMPLE</h4>
+          <h4>ACTION MASK · DESIGN EXAMPLE</h4>
           <div class="maskrow ok"><span class="name">HARVEST</span><span class="st">LEGAL</span></div>
           <div class="maskrow ok"><span class="name">HOLD</span><span class="st">LEGAL</span></div>
           <div class="maskrow ok"><span class="name">DETECTION_PUSH</span><span class="st">LEGAL</span></div>
@@ -494,11 +501,15 @@
 <section class="slide" id="s6">
   <div class="inner">
     <div class="demo-head">
-      <h2><span class="kicker" style="display:inline;margin-right:16px"><span class="n">06</span></span>British GP Sprint · <span class="accent">Hamilton vs Antonelli</span> · Laps 7–8</h2>
-      <span class="live"><span class="dot"></span>SIMULATED REPLAY</span>
+      <h2><span class="kicker" style="display:inline;margin-right:16px"><span class="n">06</span></span><span id="demoTitle">British GP Sprint · <span class="accent">Hamilton vs Antonelli</span> · Laps 7–8</span></h2>
+      <span class="live"><span class="dot"></span>CONCEPT PREVIEW · SIMULATED</span>
     </div>
     <div class="demo-grid">
       <div class="trackpane">
+        <div class="scntabs">
+          <button class="scntab active" data-scn="british">BRITISH · HAM vs ANT</button>
+          <button class="scntab" data-scn="spa">SPA · BUCKET 6 TEST</button>
+        </div>
         <div id="toast"></div>
         <div id="passBanner"><div class="inner2"><div class="big">P2 ▸ P1</div><div class="sm">OBSERVED · HAM TELEMETRY: DriverAhead → CAR 12 · 1.14 M · 4.575 KM · ≈282 KM/H</div></div></div>
         <svg id="trackSvg" viewBox="0 0 960 600" preserveAspectRatio="xMidYMid meet"></svg>
@@ -548,7 +559,7 @@
         </div>
       </div>
     </div>
-    <div class="demo-foot">SYNTHETIC ENERGY TWIN OVER A REAL POSITIONAL SCENARIO · STYLIZED CIRCUIT GEOMETRY · TRACK COLOURED BY ENERGY SHADOW PRICE λ<sub>E</sub> · VALUES TAGGED SIM ARE SIMULATED, NEVER CLAIMED AS REAL ERS TELEMETRY · THE REAL POSITION CHANGE ANCHORS SCENARIO REALISM, NOT THE SIMULATED ENERGY STATE · PUBLIC “DRS” FIELD IS NOT 2026 ACTIVE AERO AND IS NOT USED</div>
+    <div class="demo-foot">DESIGN PREVIEW OF THE PLANNED ENGINE — SCRIPTED ILLUSTRATIVE VALUES, NOT LIVE PLANNER OUTPUT · STYLIZED CIRCUIT GEOMETRY · TRACK COLOURED BY ENERGY SHADOW PRICE λ<sub>E</sub> · VALUES TAGGED SIM ARE SIMULATED, NEVER CLAIMED AS REAL ERS TELEMETRY · THE REAL BRITISH POSITION CHANGE ANCHORS SCENARIO REALISM ONLY · PUBLIC “DRS” FIELD IS NOT 2026 ACTIVE AERO AND IS NOT USED</div>
   </div>
 </section>
 
@@ -556,15 +567,16 @@
 <section class="slide" id="s7">
   <div class="glow" style="width:600px;height:600px;background:var(--blue);bottom:-220px;right:-180px"></div>
   <div class="inner">
-    <div class="kicker rv"><span class="n">07</span>EVALUATION JUDGES CAN TRUST</div>
-    <h2 class="rv" style="--d:.08s">Measured. Calibrated. Stress-tested.</h2>
+    <div class="kicker rv"><span class="n">07</span>THE EVALUATION PLAN</div>
+    <h2 class="rv" style="--d:.08s">How we'll prove it works.</h2>
+    <p class="sub rv" style="--d:.12s">Acceptance targets we commit to before writing a line of code — so judges can hold the build to them.</p>
     <div class="valgrid">
-      <div class="vtile rv" style="--d:.16s"><div class="vv volt">0</div><div class="vl">Rule violations targeted across all tested action sequences — enforced by the hard mask, verified by pytest boundary tests.</div></div>
-      <div class="vtile rv" style="--d:.22s"><div class="vv">&lt;250 ms</div><div class="vl">p95 latency engineering target — replanned at every replay step, sized for a live pit wall.</div></div>
-      <div class="vtile rv" style="--d:.28s"><div class="vv">Brier</div><div class="vl">Pass-probability calibration plot — we report how honest our probabilities are, not just how bold.</div></div>
-      <div class="vtile rv" style="--d:.34s"><div class="vv">±0.1 s</div><div class="vl">Gap-error sensitivity — recommendations tested against realistic timing noise.</div></div>
-      <div class="vtile rv" style="--d:.4s"><div class="vv">±10%</div><div class="vl">Usable-energy error sensitivity — the twin is stress-tested, not trusted blindly.</div></div>
-      <div class="vtile rv" style="--d:.46s"><div class="vv volt">3</div><div class="vl">Baselines beaten: greedy-attack, longest-straight deployment, lap-time-only — plus CVaR-penalized worst-case risk.</div></div>
+      <div class="vtile rv" style="--d:.16s"><div class="vv volt">0</div><div class="vl">Rule violations tolerated across tested action sequences — the hard acceptance target, enforced by the mask and pytest boundary tests.</div></div>
+      <div class="vtile rv" style="--d:.22s"><div class="vv">&lt;250 ms</div><div class="vl">p95 latency budget for every recommendation — replanning at each replay step, sized for a live pit wall.</div></div>
+      <div class="vtile rv" style="--d:.28s"><div class="vv">Brier</div><div class="vl">We'll report pass-probability calibration — how honest our probabilities are, not just how bold.</div></div>
+      <div class="vtile rv" style="--d:.34s"><div class="vv">±0.1 s</div><div class="vl">Planned gap-error sensitivity test — recommendations must stay stable under realistic timing noise.</div></div>
+      <div class="vtile rv" style="--d:.4s"><div class="vv">±10%</div><div class="vl">Planned energy-error stress test — the simulated twin is challenged, not trusted blindly.</div></div>
+      <div class="vtile rv" style="--d:.46s"><div class="vv volt">3</div><div class="vl">Baselines we'll benchmark against: greedy-attack, longest-straight deployment, lap-time-only — plus CVaR worst-case risk.</div></div>
     </div>
     <div class="provlegend rv" style="--d:.54s">
       <span class="t">EVERY UI VALUE IS LABELED</span>
@@ -619,12 +631,12 @@
   <div class="glow" style="width:800px;height:800px;background:var(--volt);top:-320px;left:50%;transform:translateX(-50%);opacity:.1"></div>
   <div class="inner">
     <div class="kicker rv" style="text-align:center"><span class="n">10</span>THE PITCH</div>
-    <p class="closepitch rv" style="--d:.1s">F1 teams know how much energy they have.<br>E-Delta tells them <b>what the next 0.1&nbsp;MJ is worth</b> — and recommends only legal ways to spend it.</p>
+    <p class="closepitch rv" style="--d:.1s">F1 teams know how much energy they have.<br>E-Delta will tell them <b>what the next 0.1&nbsp;MJ is worth</b> — and recommend only legal ways to spend it.</p>
     <div class="stamps rv" style="--d:.26s">
       <span class="stamp"><b>SPECIFIC</b> TO 2026 REGULATIONS</span>
       <span class="stamp"><b>DEFENSIBLE</b> · PEER-REVIEWED THEORY + FIA TEXT</span>
-      <span class="stamp"><b>DEMONSTRABLE</b> · THE SHADOW PRICE MAP</span>
       <span class="stamp"><b>ANCHORED</b> · REAL BRITISH GP POSITION CHANGE</span>
+      <span class="stamp"><b>BUILDABLE</b> · SCOPED FOR 24 HOURS</span>
     </div>
     <div class="logoimg small rv" style="--d:.4s" role="img" aria-label="E-Delta"></div>
     <div class="close-sub rv" style="--d:.5s">KNOW WHAT YOUR NEXT 0.1 MJ IS WORTH</div>
@@ -731,50 +743,10 @@ function animateStaticBeliefs(){
 }
 
 /* ============================================================ DEMO ENGINE */
-const LAP=5900, TOTAL=2*LAP;
 const svg=$('#trackSvg'), NS='http://www.w3.org/2000/svg';
 function el(n,attrs,parent){const e=document.createElementNS(NS,n);for(const k in attrs)e.setAttribute(k,attrs[k]);(parent||svg).appendChild(e);return e;}
 
-/* --- track geometry: star-shaped perturbed ellipse (stylized circuit) --- */
-const NPTS=720, pts=[], cum=[0];
-(function(){
-  const cx=455,cy=292,Rx=330,Ry=196;
-  for(let i=0;i<=NPTS;i++){
-    const th=i/NPTS*Math.PI*2;
-    const r=1+0.15*Math.sin(3*th+0.8)+0.10*Math.sin(5*th+2.4)+0.045*Math.sin(8*th+1.1);
-    pts.push([cx+r*Rx*Math.cos(th),cy+r*Ry*Math.sin(th)]);
-  }
-  for(let i=1;i<pts.length;i++){
-    const dx=pts[i][0]-pts[i-1][0],dy=pts[i][1]-pts[i-1][1];
-    cum.push(cum[i-1]+Math.hypot(dx,dy));
-  }
-})();
-const TRACKLEN=cum[cum.length-1];
-function ptAt(d){ // d in metres [0,LAP)
-  d=((d%LAP)+LAP)%LAP;
-  const target=d/LAP*TRACKLEN;
-  let lo=0,hi=cum.length-1;
-  while(lo<hi-1){const m=(lo+hi)>>1;if(cum[m]<target)lo=m;else hi=m;}
-  const t=(target-cum[lo])/((cum[hi]-cum[lo])||1);
-  return [lerp(pts[lo][0],pts[hi][0],t),lerp(pts[lo][1],pts[hi][1],t),lo];
-}
-function normalAt(d){
-  const a=ptAt(d-30),b=ptAt(d+30);
-  const dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy)||1;
-  return [-dy/len,dx/len];
-}
-
-/* --- shadow price field & colormap --- */
-function lambdaE(d,lap){
-  let v=0.22
-    +0.30*gauss(d,260,260)
-    +0.22*gauss(d,2650,300)
-    -0.10*gauss(d,1700,220)
-    -0.08*gauss(d,3400,240);
-  v+=(lap===7?0.62:0.26)*gauss(d,4750,240);
-  v+=(lap===8?0.68:0.12)*gauss(d,4520,200);
-  return Math.max(0,Math.min(1,v));
-}
+/* --- colormap --- */
 const STOPS=[[0,[20,33,63]],[.30,[0,150,199]],[.55,[0,229,255]],[.75,[184,255,46]],[.90,[255,176,32]],[1,[255,45,85]]];
 function cmap(v){
   for(let i=1;i<STOPS.length;i++){
@@ -786,98 +758,169 @@ function cmap(v){
   return 'rgb(255,45,85)';
 }
 
-/* --- draw track --- */
-el('path',{d:'M'+pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join('L')+'Z',fill:'none',stroke:'#05070b','stroke-width':17,'stroke-linejoin':'round'});
-const SEGN=236, segEls=[];
-for(let i=0;i<SEGN;i++){
-  const d0=i/SEGN*LAP,d1=(i+1)/SEGN*LAP;
-  const a=ptAt(d0),b=ptAt(d1+2);
-  segEls.push(el('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],'stroke-width':9,'stroke-linecap':'round',stroke:'#123'}));
-}
-function paintTrack(lap){
-  for(let i=0;i<SEGN;i++){
-    const dm=(i+.5)/SEGN*LAP;
-    segEls[i].setAttribute('stroke',cmap(lambdaE(dm,lap)));
+/* --- scenario definitions (all energy values synthetic & illustrative) --- */
+const SCENARIOS={
+british:{
+  title:'British GP Sprint · <span class="accent">Hamilton vs Antonelli</span> · Laps 7–8',
+  lap:5900,laps:2,lapNums:[7,8],
+  shape:{a:[.15,3,.8],b:[.10,5,2.4],c:[.045,8,1.1],Rx:330,Ry:196},
+  armedFromStart:false,detAt:4950,passAt:10500,jumpA:4350,jumpB:9900,
+  markers:[[0,'S/F','#e8edf4',null],[4950,'DETECTION','#ffb020','6,5'],[4575,'PASS · 4.575 KM','#ff2d55','2,4']],
+  lambda(d,li){let v=0.22+0.30*gauss(d,260,260)+0.22*gauss(d,2650,300)-0.10*gauss(d,1700,220)-0.08*gauss(d,3400,240);
+    v+=(li===1?0.62:0.26)*gauss(d,4750,240);v+=(li===2?0.68:0.12)*gauss(d,4520,200);
+    return Math.max(0,Math.min(1,v));},
+  spdK:[[0,305],[500,318],[700,182],[1200,242],[1700,152],[2200,288],[2900,312],[3300,162],[3800,222],[4300,282],[4950,334],[5300,182],[5700,262],[5900,304]],
+  gapK:[[0,1.38],[1400,1.31],[2900,1.36],[4200,1.18],[4950,0.93],[5400,1.02],[5900,1.06],[7000,0.94],[8400,0.72],[9800,0.48],[10300,0.22],[10480,0.05],[10520,-0.05],[10800,-0.35],[11800,-0.42]],
+  enK:[[0,2.60],[1400,2.38],[2900,2.76],[4200,2.72],[4950,2.54],[5900,2.66],[8400,2.42],[9800,2.35],[10650,1.93],[11200,1.83],[11800,1.90]],
+  belK:[[0,[.20,.55,.15,.10]],[2500,[.30,.45,.15,.10]],[4300,[.15,.35,.42,.08]],[5900,[.18,.30,.44,.08]],[8000,[.12,.28,.48,.12]],[9500,[.10,.22,.38,.30]],[10480,[.08,.18,.30,.44]],[11800,[.10,.30,.20,.40]]],
+  zones:[
+    {from:0,to:1400,mode:'BALANCED',energy:'−0.06 MJ/km',win:'NOW',conf:.81,reason:'No threshold opportunity inside the horizon; maintain pace and cover.'},
+    {from:1400,to:2900,mode:'HARVEST',energy:'+0.38 MJ',win:'S2 · 1.4–2.9 KM',conf:.77,reason:'Lowest λE sector of the lap — cheapest place to rebuild reserve before the Detection window.'},
+    {from:2900,to:4200,mode:'HOLD',energy:'±0.00 MJ',win:'NOW',conf:.74,reason:'Preserve reserve. Detection Line window opens at 4.2 km; do not spend early.'},
+    {from:4200,to:4950,mode:'DETECTION_PUSH',energy:'−0.18 MJ',win:'4.2 → 4.95 KM',conf:.86,reason:'Crossing inside 1.00 s arms Overtake for Lap 8 — λE peak of the entire lap; where 0.2 MJ beats 0.3 MJ later.'},
+    {from:4950,to:5900,mode:'BALANCED',energy:'−0.04 MJ/km',win:'NOW',conf:.80,reason:'Overtake armed for next lap. Bank reserve; no need to force it here.'},
+    {from:5900,to:8400,mode:'HOLD',energy:'±0.00 MJ',win:'NOW',conf:.79,reason:'Armed lap. Hold gap under 1.2 s; planned attack window at 4.4–4.6 km.'},
+    {from:8400,to:9800,mode:'BALANCED',energy:'−0.08 MJ/km',win:'3.0 → 4.0 KM',conf:.75,reason:'Close to under 0.5 s before the attack zone. Rival DEPLOYING belief still high — do not lunge yet.'},
+    {from:9800,to:10650,mode:'ATTACK',energy:'−0.42 MJ',win:'4.4 → 4.6 KM',conf:.72,reason:'Rival derating (P=0.44); pass probability 0.68 at the observed 4.575 km region.'},
+    {from:10650,to:11200,mode:'DEFEND',energy:'−0.10 MJ',win:'NOW',conf:.78,reason:'Protect against immediate re-attack; cover the inside line for one sector.'},
+    {from:11200,to:12000,mode:'HOLD',energy:'±0.00 MJ',win:'NOW',conf:.83,reason:'Position consolidated. Reserve 1.9 MJ — energy-positive for the remaining stint.'}],
+  harvest:(li,d)=>li===1?d/5900*3.4:d/5900*2.9,
+  moments:[
+    {at:4680,title:'DECISION POINT · LAP 7 · APPROACHING DETECTION LINE',
+     sub:'Gap 1.12 s · Detection Gap configured at 1.00 s · reserve 2.60 MJ (SIM). The planned engine would compare every legal strategy:',
+     rows:[['HOLD','0.31','0.22','2.61 MJ · HIGHEST','LOW',''],
+           ['ATTACK EARLY · −0.28 MJ','0.52','0.41','2.38 MJ','HIGH',''],
+           ['DETECTION_PUSH · −0.18 MJ','0.74','0.68','2.42 MJ · PROTECTED','CONTROLLED','rec'],
+           ['FULL ATTACK · −0.35 MJ','0.79','0.66','2.25 MJ · LOWEST','HIGHEST','']]},
+    {at:10380,title:'DECISION POINT · LAP 8 · 4.4 KM · OVERTAKE ARMED',
+     sub:'Gap 0.19 s and closing · rival DERATING belief 0.42 (INFERRED) · observed pass region at 4.575 km ahead:',
+     rows:[['HOLD','—','0.08','2.15 MJ','LOW — WASTES ARMED LAP',''],
+           ['ATTACK · −0.42 MJ','—','0.68','1.73 MJ','CONTROLLED','rec'],
+           ['LATE LUNGE · −0.55 MJ','—','0.44','1.60 MJ','HIGHEST',''],
+           ['DEFEND','—','0.02','2.10 MJ','LOW','']]}],
+  endSummary:{title:'REPLAY COMPLETE · LAPS 7–8',
+    sub:'One detection conversion, one legal pass, zero rule violations — the behaviour the 24-hour build must reproduce. End reserve 1.90 MJ (SIM).',
+    rows:[['DETECTION CONVERSION','✓ 0.93 s','—','—','ARMED','rec'],
+          ['PASS EXECUTED · 4.575 KM','—','0.68 → ✓','1.73 MJ','OBSERVED P-FLIP','rec'],
+          ['RULE VIOLATIONS','—','—','—','0','rec']]},
+  posBefore:['ANT · P2','HAM · P1'],posAfter:['ANT · P1','HAM · P2'],
+  passBig:'P2 ▸ P1',passSm:'OBSERVED · HAM TELEMETRY: DriverAhead → CAR 12 · 1.14 M · 4.575 KM · ≈282 KM/H'
+},
+spa:{
+  title:'Belgian GP · Spa · <span class="accent">Same Duel, Bucket 6</span> · Illustrative',
+  lap:7000,laps:1,lapNums:[1],
+  shape:{a:[.22,2,1.5],b:[.09,5,.6],c:[.05,7,2.2],Rx:345,Ry:185},
+  armedFromStart:true,detAt:null,passAt:1900,jumpA:700,jumpB:1600,
+  markers:[[0,'S/F','#e8edf4',null],[1500,'KEMMEL','#ffb020','6,5'],[1900,'PASS ZONE','#ff2d55','2,4'],[3300,'ELEVATION HARVEST','#00e5ff','2,6']],
+  lambda(d){let v=0.20+0.65*gauss(d,1500,420)+0.25*gauss(d,6350,260)+0.15*gauss(d,900,180)-0.12*gauss(d,3300,600)-0.08*gauss(d,4800,400);
+    return Math.max(0,Math.min(1,v));},
+  spdK:[[0,275],[300,85],[700,235],[1100,295],[2000,342],[2250,168],[3000,252],[3900,232],[4800,205],[5800,288],[6300,312],[6800,122],[7000,258]],
+  gapK:[[0,1.05],[700,0.82],[1100,0.55],[1600,0.28],[1850,0.06],[1900,-0.03],[2300,-0.30],[7000,-0.55]],
+  enK:[[0,2.50],[700,2.42],[1100,2.30],[1900,1.95],[2700,1.88],[4300,2.55],[6300,2.35],[7000,2.60]],
+  belK:[[0,[.10,.25,.50,.15]],[1100,[.08,.20,.42,.30]],[1900,[.06,.16,.32,.46]],[2700,[.10,.24,.30,.36]],[7000,[.14,.34,.22,.30]]],
+  zones:[
+    {from:0,to:700,mode:'BALANCED',energy:'−0.05 MJ/km',win:'NOW',conf:.78,reason:'Overtake armed from the previous lap. Line up the tow out of La Source.'},
+    {from:700,to:1150,mode:'HOLD',energy:'±0.00 MJ',win:'RAIDILLON',conf:.80,reason:'Stay in the slipstream through Eau Rouge — spend nothing before the crest.'},
+    {from:1150,to:2150,mode:'ATTACK',energy:'−0.55 MJ',win:'KEMMEL · 1.2 → 2.0 KM',conf:.74,reason:'λE peak of the lap: full legal deployment down Kemmel with the rival derating.'},
+    {from:2150,to:2700,mode:'DEFEND',energy:'−0.08 MJ',win:'LES COMBES',conf:.79,reason:'Cover the inside into Les Combes against the counter-attack.'},
+    {from:2700,to:4300,mode:'HARVEST',energy:'+0.85 MJ',win:'2.7 → 4.3 KM',conf:.81,reason:'The Bucket 6 payoff: a long elevation-assisted recovery zone Silverstone does not have.'},
+    {from:4300,to:6300,mode:'BALANCED',energy:'−0.06 MJ/km',win:'NOW',conf:.77,reason:'Neutral through the middle sector while the reserve rebuilds.'},
+    {from:6300,to:7100,mode:'HOLD',energy:'±0.00 MJ',win:'BUS STOP',conf:.82,reason:'Position safe; bank the lap.'}],
+  harvest:(li,d)=>d/7000*4.1,
+  moments:[
+    {at:950,title:'DECISION POINT · APPROACHING RAIDILLON — SAME ENGINE, NEW MAP',
+     sub:'Gap 0.7 s, Overtake armed · the λE map has moved: the value now lives on Kemmel and the elevation harvest:',
+     rows:[['HOLD','—','0.12','2.46 MJ','LOW — WASTES THE TOW',''],
+           ['ATTACK ON KEMMEL · −0.55 MJ','—','0.61','1.95 MJ','CONTROLLED','rec'],
+           ['ATTACK BEFORE CREST · −0.60 MJ','—','0.38','1.90 MJ','HIGHEST',''],
+           ['HARVEST NOW','—','0.05','2.62 MJ','LOW','']]}],
+  endSummary:{title:'SPA PREVIEW COMPLETE · GENERALIZATION CHECK',
+    sub:'Same architecture, different circuit: the λE map moved to Kemmel and the elevation harvest — and the plan changed with it.',
+    rows:[['PASS ON KEMMEL','—','0.61 → ✓','1.95 MJ','ILLUSTRATIVE','rec'],
+          ['ELEVATION HARVEST','+0.85 MJ','—','2.60 MJ','BUCKET 6','rec'],
+          ['RULE VIOLATIONS','—','—','—','0','rec']]},
+  posBefore:['ANT · P2','HAM · P1'],posAfter:['ANT · P1','HAM · P2'],
+  passBig:'P2 ▸ P1',passSm:'ILLUSTRATIVE SYNTHETIC PASS · KEMMEL STRAIGHT · NOT OBSERVED TELEMETRY'
+}};
+
+/* --- runtime state --- */
+let C=SCENARIOS.british, TOTAL=C.lap*C.laps;
+let S=0, playing=false, tscale=3, last=null;
+let doneM=[], doneDet=false, passed=false, ended=false;
+
+/* --- geometry (star-shaped perturbed ellipse; stylized) --- */
+const NPTS=720;
+let pts=[],cum=[],TRACKLEN=0,segEls=[],rivalG,ownG,rivalT,ownT;
+function buildGeometry(){
+  pts=[];cum=[0];
+  const cx=455,cy=292,sh=C.shape;
+  for(let i=0;i<=NPTS;i++){
+    const th=i/NPTS*Math.PI*2;
+    const r=1+sh.a[0]*Math.sin(sh.a[1]*th+sh.a[2])+sh.b[0]*Math.sin(sh.b[1]*th+sh.b[2])+sh.c[0]*Math.sin(sh.c[1]*th+sh.c[2]);
+    pts.push([cx+r*sh.Rx*Math.cos(th),cy+r*sh.Ry*Math.sin(th)]);
   }
+  for(let i=1;i<pts.length;i++){
+    const dx=pts[i][0]-pts[i-1][0],dy=pts[i][1]-pts[i-1][1];
+    cum.push(cum[i-1]+Math.hypot(dx,dy));
+  }
+  TRACKLEN=cum[cum.length-1];
 }
-/* markers */
-function marker(d,label,color,dash){
-  const[x,y]=ptAt(d),[nx,ny]=normalAt(d);
-  el('line',{x1:x-nx*16,y1:y-ny*16,x2:x+nx*16,y2:y+ny*16,stroke:color,'stroke-width':3,'stroke-dasharray':dash||'none'});
-  const t=el('text',{x:x+nx*30,y:y+ny*30,fill:color,'font-size':11,'font-family':'ui-monospace,monospace','text-anchor':'middle','letter-spacing':'2'});
-  t.textContent=label;
+function ptAt(d){
+  d=((d%C.lap)+C.lap)%C.lap;
+  const target=d/C.lap*TRACKLEN;
+  let lo=0,hi=cum.length-1;
+  while(lo<hi-1){const m=(lo+hi)>>1;if(cum[m]<target)lo=m;else hi=m;}
+  const t=(target-cum[lo])/((cum[hi]-cum[lo])||1);
+  return [lerp(pts[lo][0],pts[hi][0],t),lerp(pts[lo][1],pts[hi][1],t)];
 }
-marker(0,'S/F','#e8edf4');
-marker(4950,'DETECTION','#ffb020','6,5');
-marker(4575,'PASS · 4.575 KM','#ff2d55','2,4');
-/* legend */
-(function(){
+function normalAt(d){
+  const a=ptAt(d-30),b=ptAt(d+30);
+  const dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy)||1;
+  return [-dy/len,dx/len];
+}
+function buildTrack(){
+  buildGeometry();
+  svg.innerHTML='';
+  el('path',{d:'M'+pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join('L')+'Z',fill:'none',stroke:'#05070b','stroke-width':17,'stroke-linejoin':'round'});
+  const SEGN=236;segEls=[];
+  for(let i=0;i<SEGN;i++){
+    const a=ptAt(i/SEGN*C.lap),b=ptAt((i+1)/SEGN*C.lap+2);
+    segEls.push(el('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],'stroke-width':9,'stroke-linecap':'round',stroke:'#123'}));
+  }
+  for(const[d,label,color,dash]of C.markers){
+    const[x,y]=ptAt(d),[nx,ny]=normalAt(d);
+    el('line',{x1:x-nx*16,y1:y-ny*16,x2:x+nx*16,y2:y+ny*16,stroke:color,'stroke-width':3,'stroke-dasharray':dash||'none'});
+    const t=el('text',{x:x+nx*30,y:y+ny*30,fill:color,'font-size':11,'font-family':'ui-monospace,monospace','text-anchor':'middle','letter-spacing':'2'});
+    t.textContent=label;
+  }
   const g=el('g',{});
-  const t=el('text',{x:24,y:36,fill:'#5a6472','font-size':10,'font-family':'ui-monospace,monospace','letter-spacing':'2'},g);
-  t.textContent='TRACK COLOUR = ENERGY SHADOW PRICE λE';
+  const lt=el('text',{x:24,y:36,fill:'#5a6472','font-size':10,'font-family':'ui-monospace,monospace','letter-spacing':'2'},g);
+  lt.textContent='TRACK COLOUR = ENERGY SHADOW PRICE λE';
   for(let i=0;i<60;i++)el('rect',{x:24+i*3,y:46,width:3,height:8,fill:cmap(i/59)},g);
   const lo=el('text',{x:24,y:70,fill:'#5a6472','font-size':9,'font-family':'ui-monospace,monospace'},g);lo.textContent='LOW';
   const hi=el('text',{x:204,y:70,fill:'#5a6472','font-size':9,'font-family':'ui-monospace,monospace','text-anchor':'end'},g);hi.textContent='HIGH';
-})();
-/* cars */
-const rivalG=el('g',{}),ownG=el('g',{});
-el('circle',{r:12,fill:'rgba(0,229,255,.15)'},rivalG);el('circle',{r:6.5,fill:'#00e5ff'},rivalG);
-const rivalT=el('text',{y:-14,fill:'#00e5ff','font-size':11,'font-family':'ui-monospace,monospace','text-anchor':'middle','font-weight':'700'},rivalG);rivalT.textContent='HAM · P1';
-el('circle',{r:12,fill:'rgba(184,255,46,.15)'},ownG);el('circle',{r:6.5,fill:'#b8ff2e'},ownG);
-const ownT=el('text',{y:-14,fill:'#b8ff2e','font-size':11,'font-family':'ui-monospace,monospace','text-anchor':'middle','font-weight':'700'},ownG);ownT.textContent='ANT · P2';
+  rivalG=el('g',{});ownG=el('g',{});
+  el('circle',{r:12,fill:'rgba(0,229,255,.15)'},rivalG);el('circle',{r:6.5,fill:'#00e5ff'},rivalG);
+  rivalT=el('text',{y:-14,fill:'#00e5ff','font-size':11,'font-family':'ui-monospace,monospace','text-anchor':'middle','font-weight':'700'},rivalG);
+  el('circle',{r:12,fill:'rgba(184,255,46,.15)'},ownG);el('circle',{r:6.5,fill:'#b8ff2e'},ownG);
+  ownT=el('text',{y:-14,fill:'#b8ff2e','font-size':11,'font-family':'ui-monospace,monospace','text-anchor':'middle','font-weight':'700'},ownG);
+}
+function paintTrack(li){
+  for(let i=0;i<segEls.length;i++){
+    const dm=(i+.5)/segEls.length*C.lap;
+    segEls[i].setAttribute('stroke',cmap(C.lambda(dm,li)));
+  }
+}
 
-/* --- scenario data (all synthetic; distances in metres of total 2-lap run) --- */
-const gapK=[[0,1.38],[1400,1.31],[2900,1.36],[4200,1.18],[4950,0.93],[5400,1.02],[5900,1.06],[7000,0.94],[8400,0.72],[9800,0.48],[10300,0.22],[10480,0.05],[10520,-0.05],[10800,-0.35],[11800,-0.42]];
-const enK=[[0,2.60],[1400,2.38],[2900,2.76],[4200,2.72],[4950,2.54],[5900,2.66],[8400,2.42],[9800,2.35],[10650,1.93],[11200,1.83],[11800,1.90]];
-const spdK=[[0,305],[500,318],[700,182],[1200,242],[1700,152],[2200,288],[2900,312],[3300,162],[3800,222],[4300,282],[4950,334],[5300,182],[5700,262],[5900,304]];
-const belK=[
-  [0,[.20,.55,.15,.10]],[2500,[.30,.45,.15,.10]],[4300,[.15,.35,.42,.08]],[5900,[.18,.30,.44,.08]],
-  [8000,[.12,.28,.48,.12]],[9500,[.10,.22,.38,.30]],[10480,[.08,.18,.30,.44]],[11800,[.10,.30,.20,.40]]
-];
-const zones=[
-  {from:0,to:1400,mode:'BALANCED',energy:'−0.06 MJ/km',win:'NOW',conf:.81,reason:'No threshold opportunity inside the horizon; maintain pace and cover.'},
-  {from:1400,to:2900,mode:'HARVEST',energy:'+0.38 MJ',win:'S2 · 1.4–2.9 KM',conf:.77,reason:'Lowest λE sector of the lap — cheapest place to rebuild reserve before the Detection window.'},
-  {from:2900,to:4200,mode:'HOLD',energy:'±0.00 MJ',win:'NOW',conf:.74,reason:'Preserve reserve. Detection Line window opens at 4.2 km; do not spend early.'},
-  {from:4200,to:4950,mode:'DETECTION_PUSH',energy:'−0.18 MJ',win:'4.2 → 4.95 KM',conf:.86,reason:'Crossing inside 1.00 s arms Overtake for Lap 8. λE peak of the entire lap — this is where 0.2 MJ beats 0.3 MJ later.'},
-  {from:4950,to:5900,mode:'BALANCED',energy:'−0.04 MJ/km',win:'NOW',conf:.80,reason:'Overtake armed for next lap. Bank reserve; no need to force it here.'},
-  {from:5900,to:8400,mode:'HOLD',energy:'±0.00 MJ',win:'NOW',conf:.79,reason:'Armed lap. Hold gap under 1.2 s; planned attack window at 4.4–4.6 km.'},
-  {from:8400,to:9800,mode:'BALANCED',energy:'−0.08 MJ/km',win:'3.0 → 4.0 KM',conf:.75,reason:'Close to under 0.5 s before the attack zone. Rival DEPLOYING belief still high — do not lunge yet.'},
-  {from:9800,to:10650,mode:'ATTACK',energy:'−0.42 MJ',win:'4.4 → 4.6 KM',conf:.72,reason:'Rival DERATING belief rising (0.44). Pass probability 0.68 at 4.58 km with full legal deployment.'},
-  {from:10650,to:11200,mode:'DEFEND',energy:'−0.10 MJ',win:'NOW',conf:.78,reason:'Protect against immediate re-attack; cover the inside line for one sector.'},
-  {from:11200,to:12000,mode:'HOLD',energy:'±0.00 MJ',win:'NOW',conf:.83,reason:'Position consolidated. Reserve 1.9 MJ — energy-positive for the remaining stint.'}
-];
+/* --- action chips --- */
 const MODES=['HARVEST','HOLD','BALANCED','DETECTION_PUSH','ATTACK','DEFEND'];
 const modeWrap=$('#modeChips'),modeEls={};
 MODES.forEach(m=>{
   const d=document.createElement('div');d.className='mchip';d.innerHTML=`<span>${m}</span><span class="mk">·</span>`;
   modeWrap.appendChild(d);modeEls[m]=d;
 });
-const momentA={
-  at:4680,title:'DECISION POINT · LAP 7 · APPROACHING DETECTION LINE',
-  sub:'Gap 1.12 s · Detection Gap configured at 1.00 s · reserve 2.60 MJ (SIM). The planner compares every legal strategy:',
-  rows:[
-    ['HOLD','0.31','0.22','2.61 MJ · HIGHEST','LOW',''],
-    ['ATTACK EARLY · −0.28 MJ','0.52','0.41','2.38 MJ','HIGH',''],
-    ['DETECTION_PUSH · −0.18 MJ','0.74','0.68','2.42 MJ · PROTECTED','CONTROLLED','rec'],
-    ['FULL ATTACK · −0.35 MJ','0.79','0.66','2.25 MJ · LOWEST','HIGHEST','']
-  ]
-};
-const momentB={
-  at:10380,title:'DECISION POINT · LAP 8 · 4.4 KM · OVERTAKE ARMED',
-  sub:'Gap 0.19 s and closing · rival DERATING belief 0.42 (INFERRED) · observed pass region at 4.575 km ahead:',
-  rows:[
-    ['HOLD','—','0.08','2.15 MJ','LOW — WASTES ARMED LAP',''],
-    ['ATTACK · −0.42 MJ','—','0.68','1.73 MJ','CONTROLLED','rec'],
-    ['LATE LUNGE · −0.55 MJ','—','0.44','1.60 MJ','HIGHEST',''],
-    ['DEFEND','—','0.02','2.10 MJ','LOW','']
-  ]
-};
 
-/* --- runtime state --- */
-let S=0, playing=false, tscale=3, last=null;
-let doneA=false, doneB=false, doneDet=false, passed=false, ended=false;
-const flags=s=>{doneA=s>momentA.at;doneB=s>momentB.at;doneDet=s>4960;passed=s>10500;ended=false;};
-
+/* --- UI helpers --- */
 function showCf(m){
   $('#cfTitle').textContent=m.title;$('#cfSub').textContent=m.sub;
   $('#cfBody').innerHTML=m.rows.map(r=>`<tr class="${r[5]}"><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join('');
@@ -893,24 +936,32 @@ function setPlay(p){
   if(p){hideCf();last=null;}
 }
 function togglePlay(){if(ended){resetDemo();setPlay(true);return;}setPlay(!playing);}
-
-function resetDemo(){S=0;flags(0);setPlay(false);hideCf();$('#passBanner').classList.remove('show');paintTrack(7);render();}
-function jumpTo(s){S=s;flags(s);$('#passBanner').classList.remove('show');paintTrack(S<LAP?7:8);setPlay(true);render();}
+const flags=s=>{doneM=C.moments.map(m=>s>m.at);doneDet=C.detAt?s>C.detAt+10:true;passed=s>C.passAt;ended=false;};
+function resetDemo(){S=0;flags(0);setPlay(false);hideCf();$('#passBanner').classList.remove('show');paintTrack(1);render();}
+function jumpTo(s){S=s;flags(s);$('#passBanner').classList.remove('show');paintTrack(Math.floor(s/C.lap)+1);setPlay(true);render();}
+function selectScenario(key){
+  C=SCENARIOS[key];TOTAL=C.lap*C.laps;
+  document.querySelectorAll('.scntab').forEach(b=>b.classList.toggle('active',b.dataset.scn===key));
+  $('#demoTitle').innerHTML=C.title;
+  $('#passBanner .big').textContent=C.passBig;
+  $('#passBanner .sm').textContent=C.passSm;
+  buildTrack();resetDemo();
+}
+document.querySelectorAll('.scntab').forEach(b=>b.addEventListener('click',()=>selectScenario(b.dataset.scn)));
 
 $('#btnPlay').onclick=togglePlay;
 $('#btnReset').onclick=resetDemo;
-$('#btnDet').onclick=()=>jumpTo(4350);
-$('#btnPass').onclick=()=>jumpTo(9900);
+$('#btnDet').onclick=()=>jumpTo(C.jumpA);
+$('#btnPass').onclick=()=>jumpTo(C.jumpB);
 $('#btnSpeed').onclick=e=>{tscale=tscale===3?6:3;e.target.textContent=tscale===3?'1×':'2×';};
 
-function zoneAt(s){for(const z of zones)if(s>=z.from&&s<z.to)return z;return zones[zones.length-1];}
+function zoneAt(s){for(const z of C.zones)if(s>=z.from&&s<z.to)return z;return C.zones[C.zones.length-1];}
 
 function render(){
-  const lap=S<LAP?7:8, d=S%LAP;
-  const gap=kf(gapK,S), en=kf(enK,S), spd=kf(spdK,d), bel=kfv(belK,S);
+  const li=Math.min(Math.floor(S/C.lap)+1,C.laps), d=S%C.lap;
+  const gap=kf(C.gapK,S), en=kf(C.enK,S), spd=kf(C.spdK,d), bel=kfv(C.belK,S);
   const bsum=bel.reduce((a,b)=>a+b,0);const beln=bel.map(b=>b/bsum);
-  /* HUD */
-  $('#hudLap').textContent=lap;
+  $('#hudLap').textContent=C.lapNums[li-1];
   $('#hudDist').textContent=(d/1000).toFixed(2)+' km';
   $('#hudSpeed').textContent=Math.round(spd);
   const g=$('#hudGap');
@@ -918,68 +969,63 @@ function render(){
   else{g.textContent='+'+(-gap).toFixed(2)+' s ▲';g.style.color='var(--volt)';}
   $('#hudEnergy').textContent=en.toFixed(2)+' MJ';
   $('#hudEbar').style.width=(en/4*100)+'%';
-  const harv=lap===7?d/LAP*3.4:3.4*0+d/LAP*2.9;
-  $('#hudHarvest').firstChild.textContent=harv.toFixed(1);
-  /* beliefs */
+  $('#hudHarvest').firstChild.textContent=C.harvest(li,d).toFixed(1);
   beln.forEach((b,i)=>{$('#db'+i).style.width=(b*100)+'%';$('#dp'+i).textContent='.'+String(Math.round(b*100)).padStart(2,'0');});
-  /* recommendation */
   const z=zoneAt(S);
   $('#recMode').textContent=z.mode;
   $('#recEnergy').textContent=z.energy;$('#recWindow').textContent=z.win;
   $('#recConf').style.width=(z.conf*100)+'%';$('#recConfV').textContent=z.conf.toFixed(2);
   $('#recReason').textContent=z.reason;
-  /* mask / overtake-profile eligibility */
-  const armed=lap===8;
+  const armed=C.armedFromStart||li>=2;
   MODES.forEach(m=>{
     const e=modeEls[m];
     e.classList.toggle('active',m===z.mode);
     e.querySelector('.mk').textContent=(m===z.mode?'▶':'·');
   });
   const mn=$('#maskNote');
-  if(armed){mn.style.color='var(--volt)';mn.textContent='⚡ OVERTAKE PROFILE ARMED (z_OT = 1) · 355 km/h deployment profile available this lap.';}
-  else if(doneDet){mn.style.color='var(--cyan)';mn.textContent='◔ ELIGIBILITY EARNED · gap 0.93 s < 1.00 s at Detection — Overtake arms at S/F for Lap 8.';}
+  if(armed){mn.style.color='var(--volt)';mn.textContent=C.armedFromStart?
+    '⚡ OVERTAKE ARMED (z_OT = 1) · carried from the previous lap — 355 km/h profile available.':
+    '⚡ OVERTAKE PROFILE ARMED (z_OT = 1) · 355 km/h deployment profile available this lap.';}
+  else if(doneDet&&C.detAt){mn.style.color='var(--cyan)';mn.textContent='◔ ELIGIBILITY EARNED · gap 0.93 s < 1.00 s at Detection — Overtake arms at S/F for Lap 8.';}
   else{mn.style.color='var(--amber)';mn.textContent='◌ OVERTAKE PROFILE LOCKED (z_OT = 0) · Detection eligibility not yet met — Normal profile only.';}
   $('#recLegal').textContent='LEGAL ✓';
-  /* cars */
-  const gm=Math.max(gap*spd/3.6, gap>=0?10:-1e9); // metres ahead (visual floor 10m pre-pass)
+  const gm=Math.max(gap*spd/3.6, gap>=0?10:-1e9);
   const rd=gap>=0?d+gm:d+gap*spd/3.6;
   const[ox,oy]=ptAt(d),[rx,ry]=ptAt(rd);
   ownG.setAttribute('transform',`translate(${ox},${oy})`);
   rivalG.setAttribute('transform',`translate(${rx},${ry})`);
-  ownT.textContent=passed?'ANT · P1':'ANT · P2';
-  rivalT.textContent=passed?'HAM · P2':'HAM · P1';
+  ownT.textContent=passed?C.posAfter[0]:C.posBefore[0];
+  rivalT.textContent=passed?C.posAfter[1]:C.posBefore[1];
 }
 
 function step(ts){
   if(playing){
     if(last==null)last=ts;
     const dt=Math.min((ts-last)/1000,.05);last=ts;
-    const spd=kf(spdK,S%LAP);
+    const spd=kf(C.spdK,S%C.lap);
     const prev=S;
     S+=spd/3.6*dt*tscale;
-    /* events */
-    if(!doneA&&prev<momentA.at&&S>=momentA.at){S=momentA.at;doneA=true;setPlay(false);render();showCf(momentA);}
-    if(!doneDet&&prev<4950&&S>=4950){doneDet=true;toast('⚡ CROSSED DETECTION LINE — GAP 0.93 s < 1.00 s — OVERTAKE ARMED FOR LAP 8');}
-    if(prev<LAP&&S>=LAP){paintTrack(8);toast('LAP 8 — OVERTAKE ARMED · λE MAP RECOMPUTED',3000);}
-    if(!doneB&&prev<momentB.at&&S>=momentB.at){S=momentB.at;doneB=true;setPlay(false);render();showCf(momentB);}
-    if(!passed&&prev<10500&&S>=10500){
+    for(let i=0;i<C.moments.length;i++){
+      const m=C.moments[i];
+      if(!doneM[i]&&prev<m.at&&S>=m.at){S=m.at;doneM[i]=true;setPlay(false);render();showCf(m);}
+    }
+    if(C.detAt&&!doneDet&&prev<C.detAt&&S>=C.detAt){doneDet=true;toast('⚡ CROSSED DETECTION LINE — GAP 0.93 s < 1.00 s — OVERTAKE ARMED FOR LAP 8');}
+    if(C.laps>1&&prev<C.lap&&S>=C.lap){paintTrack(2);toast('LAP '+C.lapNums[1]+' — OVERTAKE ARMED · λE MAP RECOMPUTED',3000);}
+    if(!passed&&prev<C.passAt&&S>=C.passAt){
       passed=true;$('#passBanner').classList.add('show');
       setTimeout(()=>$('#passBanner').classList.remove('show'),3800);
     }
     if(S>=TOTAL){
       S=TOTAL-1;ended=true;setPlay(false);
-      showCf({title:'REPLAY COMPLETE · LAPS 7–8',
-        sub:'One detection conversion, one legal pass, zero rule violations. End reserve 1.90 MJ (SIM) — energy-positive for the stint.',
-        rows:[['DETECTION CONVERSION','✓ 0.93 s','—','—','ARMED','rec'],
-              ['PASS EXECUTED · 4.575 KM','—','0.68 → ✓','1.73 MJ','OBSERVED P-FLIP','rec'],
-              ['RULE VIOLATIONS','—','—','—','0','rec']]});
+      showCf(C.endSummary);
       $('#btnPlay').textContent='↺ REPLAY';
     }
   }else{last=null;}
   if(playing)render();
   requestAnimationFrame(step);
 }
-paintTrack(7);flags(0);render();requestAnimationFrame(step);
+selectScenario('british');requestAnimationFrame(step);
+
 
 /* ============================================================ AUTOPILOT */
 let apActive=false, apVoice=null;
@@ -1079,11 +1125,11 @@ async function runAutopilot(){
   document.body.classList.add('ap');
   apEl.style.display='block';$('#apBadge').style.display='block';$('#keyhint').style.display='none';
   apCur.place(innerWidth/2,innerHeight*0.75);
-  resetDemo();
+  selectScenario('british');
   apVoice=await initVoice();
 
   await runStep(0,
-    "Hi! We're Team E-Delta, and this is our submission for TrackShift twenty twenty-six — Energy and Overtake Intelligence. In twenty twenty-six Formula One, the hard question is not how much energy you have left. It's what your next tenth of a megajoule is actually worth — against this rival, at this corner, under today's rules. Let us show you.",
+    "Hi! We're Team E-Delta, and this is our idea submission for TrackShift twenty twenty-six — Energy and Overtake Intelligence. In twenty twenty-six Formula One, the hard question is not how much energy you have left. It's what your next tenth of a megajoule is actually worth — against this rival, at this corner, under today's rules. Here's what we're going to build.",
     async()=>{await spot(document.querySelector('.hook'),2600);});
 
   await runStep(1,
@@ -1095,33 +1141,33 @@ async function runAutopilot(){
     async()=>{await spot(document.querySelector('.formula'),2600);await spot(document.querySelector('.spbar'),2000);await spot(document.querySelector('.insight'),2600);});
 
   await runStep(3,
-    "Here's the architecture. A real telemetry replay and the F I A rule configuration flow into three transparent models — a simulated energy twin, a rival belief filter, and the shadow price. A rule-masked beam planner then searches only legal futures, five to six mini-sectors deep, and returns a recommendation with counterfactuals — targeting under two hundred and fifty milliseconds. Full-information optimization stays offline, as our oracle and benchmark.",
+    "Here's the architecture we'll build in the twenty-four hour window. A real telemetry replay and the F I A rule configuration flow into three transparent models — a simulated energy twin, a rival belief filter, and the shadow price. A rule-masked beam planner then searches only legal futures, five to six mini-sectors deep, and returns a recommendation with counterfactuals — with a latency budget under two hundred and fifty milliseconds. Full-information optimization stays offline, as our oracle and benchmark.",
     async()=>{const p=document.querySelectorAll('.pnode');for(const n of p){await spot(n,1150);} });
 
   await runStep(4,
-    "Legality is not a penalty term. Illegal actions are removed before scoring — they never even reach the planner. The rules live in an inspectable YAML file, and we unit test the exact regulatory boundaries: two ninety, three forty, three forty-five, three fifty, and three fifty-five kilometres per hour — plus the recharge cap and the line boundary itself.",
+    "Legality will not be a penalty term. Illegal actions are removed before scoring — they never even reach the planner. The rules live in an inspectable YAML file, and we will unit test the exact regulatory boundaries: two ninety, three forty, three forty-five, three fifty, and three fifty-five kilometres per hour — plus the recharge cap and the line boundary itself.",
     async()=>{await spot(document.querySelector('pre.yaml'),2400);await spot(document.querySelector('.maskwhy'),2200);await spot(document.querySelector('.ppcard'),2600);});
 
   await runStep(5,
-    "And the rival? We don't guess. We maintain a belief over four hidden types — conserving, balanced, deploying, and derating — updated every twenty metres from observable evidence like pace residuals and brake-point movement. It's a bounded, practical Bayesian game, anchored in peer-reviewed energy game theory — not a black box.",
+    "And the rival? We won't guess. The engine maintains a belief over four hidden types — conserving, balanced, deploying, and derating — updated every twenty metres from observable evidence like pace residuals and brake-point movement. It's a bounded, practical Bayesian game, anchored in peer-reviewed energy game theory — not a black box.",
     async()=>{await spot(qa('#s5 .belief-row',2),2200);await spot(document.querySelector('.cite'),2800);});
 
-  /* ---- the live demo, fully choreographed ---- */
+  /* ---- the concept demo, fully choreographed ---- */
   if(!apActive)return;
   await goSlide(6);
-  resetDemo();
-  await speak("Now the part we're most proud of — a live replay. British Grand Prix Sprint, Hamilton leading Antonelli, laps seven and eight. The track is coloured by the Energy Shadow Price, and every value is labelled: observed, inferred, or simulated. Let's play.");
+  selectScenario('british');
+  await speak("Now, a working preview of the concept. What you're watching is a scripted simulation of the engine we'll build — the position change is real telemetry, but every energy number is an illustrative simulation, and it's labelled that way on screen. British Grand Prix Sprint, Hamilton leading Antonelli, laps seven and eight. The track is coloured by the Energy Shadow Price. Let's play.");
   await apCur.click($('#btnPlay'));
-  await speak("Antonelli is one point four seconds back. E-Delta recommends harvesting through the cheap sectors — rebuilding reserve while the shadow price is low.");
-  await waitFor(()=>doneA&&!playing);
+  await speak("Antonelli is one point four seconds back. The engine would recommend harvesting through the cheap sectors — rebuilding reserve while the shadow price is low.");
+  await waitFor(()=>doneM[0]&&!playing);
   if(apActive){
     await apCur.moveTo($('#cfPanel'));
-    await speak("First decision point — the planner pauses us before the Detection Line, one point one two seconds behind. Look at the choices. Holding is safe, but converts detection only thirty-one percent of the time. A full attack converts at seventy-nine — and drains the reserve to its lowest. Detection Push is the sweet spot: just point one eight megajoules for a seventy-four percent conversion, with the reserve protected. That is the shadow price doing its job.");
+    await speak("First decision point — the planner pauses before the Detection Line, one point one two seconds behind. Look at the choices. Holding is safe, but converts detection only thirty-one percent of the time. A full attack converts at seventy-nine — and drains the reserve to its lowest. Detection Push is the sweet spot: just point one eight megajoules for a seventy-four percent conversion, with the reserve protected. That is the shadow price doing its job.");
     setPlay(true);
     await speak("Watch the gap at the line... zero point nine three seconds — inside the one-second detection gap. Overtake is armed for lap eight.");
-    await speak("Into lap eight, the map recomputes — the shadow price now peaks at the attack zone. E-Delta holds, keeping the gap under a second, while the belief filter watches the rival burn energy defending.");
+    await speak("Into lap eight, the map recomputes — the shadow price now peaks at the attack zone. The engine holds, keeping the gap under a second, while the belief filter watches the rival burn energy defending.");
   }
-  await waitFor(()=>doneB&&!playing);
+  await waitFor(()=>doneM[1]&&!playing);
   if(apActive){
     await apCur.moveTo($('#cfPanel'));
     await speak("Lap eight, decision point two. The belief filter now reads Hamilton as derating — he's spent energy defending. A legal attack at the observed pass point carries a sixty-eight percent pass probability. E-Delta says go.");
@@ -1133,12 +1179,32 @@ async function runAutopilot(){
     tscale=6;
     await waitFor(()=>ended,40000);
     tscale=3;
-    await speak("One detection conversion. One legal pass. Zero rule violations.");
+    await speak("One detection conversion. One legal pass. Zero rule violations. That is the behaviour our twenty-four hour build has to reproduce.");
     setPlay(false);
   }
 
+  /* ---- second scenario: Spa generalization ---- */
+  if(apActive){
+    await apCur.click(document.querySelector('.scntab[data-scn="spa"]'));
+    await sleep(900);
+    await speak("And because the promise of E-Delta is that the architecture transfers — here is the same engine, and the same duel, pointed at Spa. Our bucket-six stress test. Watch the shadow price map: the value has moved to the Kemmel straight and to a long elevation harvest that Silverstone simply doesn't have.");
+    await apCur.click($('#btnPlay'));
+    await waitFor(()=>doneM[0]&&!playing);
+    if(apActive){
+      await apCur.moveTo($('#cfPanel'));
+      await speak("Approaching Raidillon, the engine holds in the tow and spends nothing before the crest — then recommends the full legal deployment down Kemmel, where the map now peaks. Attacking before the crest would waste it. Same decision logic, completely different plan.");
+      setPlay(true);
+      await waitFor(()=>passed,60000);
+      await speak("An illustrative pass on Kemmel — then the bucket-six payoff: a long elevation-assisted harvest. Different circuit, different tactics, one architecture.");
+      tscale=6;
+      await waitFor(()=>ended,60000);
+      tscale=3;
+      setPlay(false);
+    }
+  }
+
   await runStep(7,
-    "We evaluate like engineers, with numbers judges can check: zero tolerated rule violations, latency profiling against a two hundred and fifty millisecond target, calibrated pass probabilities, and sensitivity tests on gap error and energy error — all against three baselines.",
+    "How will we prove it works? We'll commit to acceptance targets before writing a line of code: zero tolerated rule violations, a two hundred and fifty millisecond latency budget, calibrated pass probabilities, and sensitivity tests on gap error and energy error — benchmarked against three baselines.",
     async()=>{await spot(qa('.vtile',0),1700);await spot(qa('.vtile',3),1700);await spot(document.querySelector('.provlegend'),2000);});
 
   await runStep(8,
@@ -1150,7 +1216,7 @@ async function runAutopilot(){
     async()=>{for(let i=0;i<6;i++){await spot(qa('.hcard',i),1350);} });
 
   await runStep(10,
-    "So. Formula One teams already know how much energy they have. E-Delta tells them what the next tenth of a megajoule is worth — and recommends only legal ways to spend it. We're Team E-Delta. Thank you for watching.",
+    "So. Formula One teams already know how much energy they have. After our twenty-four hours, E-Delta will tell them what the next tenth of a megajoule is worth — and recommend only legal ways to spend it. We're Team E-Delta. Thank you for watching.",
     async()=>{await spot(document.querySelector('.closepitch'),3000);});
 
   window.__apDone=true;
