@@ -16,6 +16,26 @@ python3 -m http.server 8000
 
 Press `F11` for full screen before recording.
 
+## 🎬 Autopilot mode (recommended for recording)
+
+Click **"▶ AUTOPILOT PRESENTATION"** on the cover (or press `A`) and the entire
+presentation runs itself: slides advance on cue, an animated cursor moves and clicks
+everything, the live demo plays through both decision points, on-screen captions follow
+the narration, and the narration is **spoken aloud** through your browser's speech engine.
+You only need to start your screen recorder and press the button. `Esc` stops it.
+
+Voice quality depends on the browser:
+
+- **Microsoft Edge** → best result (it exposes the "…Natural" neural voices — sounds
+  genuinely human). Record in Edge if you can.
+- **Chrome** → decent ("Google US English"; needs internet for the good voice).
+- Prefer your own voice? Mute the tab/system audio, run autopilot, and speak over it —
+  the captions double as your teleprompter.
+
+Recording checklist: full screen (`F11`), start OBS/QuickTime, park your real mouse in a
+corner (the page hides it during autopilot), click the button, don't touch anything until
+the closing slide. Total runtime ≈ 5 minutes.
+
 ## Controls
 
 | Key / control | Action |
