@@ -34,7 +34,13 @@ Voice quality depends on the browser:
 
 Recording checklist: full screen (`F11`), start OBS/QuickTime, park your real mouse in a
 corner (the page hides it during autopilot), click the button, don't touch anything until
-the closing slide. Total runtime ≈ 5 minutes.
+the closing slide. Total runtime ≈ 8–9 minutes (both demo scenarios). If your hackathon
+caps video length, record the manual walkthrough instead, or stop after the British
+scenario and cut to the closing slide.
+
+Note on framing: the site presents E-Delta as an **idea + 24-hour build plan**. The demo
+is a scripted concept preview (labeled on screen) — it shows the planned engine's
+behaviour, not live planner output. Slide 7 states acceptance targets, not results.
 
 ## Controls
 
