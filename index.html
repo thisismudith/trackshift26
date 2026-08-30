@@ -1129,101 +1129,97 @@ async function runAutopilot(){
   apVoice=await initVoice();
 
   await runStep(0,
-    "Hi! We're Team E-Delta, and this is our idea submission for TrackShift twenty twenty-six — Energy and Overtake Intelligence. In twenty twenty-six Formula One, the hard question is not how much energy you have left. It's what your next tenth of a megajoule is actually worth — against this rival, at this corner, under today's rules. Here's what we're going to build.",
-    async()=>{await spot(document.querySelector('.hook'),2600);});
+    "Hi — we're Team E-Delta. TrackShift twenty twenty-six, Energy and Overtake Intelligence. In twenty twenty-six Formula One, the question isn't how much energy you have left — it's what the next tenth of a megajoule is worth. Here's what we're going to build.",
+    async()=>{await spot(document.querySelector('.hook'),1800);});
 
   await runStep(1,
-    "First, why this is hard. This is not a battery-monitoring problem. The new regulations roughly triple electrical power, cap the M G U K at three hundred and fifty kilowatts, and cut normal deployment to zero at three forty-five kilometres per hour. That creates five coupled challenges: hidden state, threshold opportunities, a finite resource, an opponent who responds, and hard legality constraints. Get any one wrong, and the others break.",
-    async()=>{await spot(qa('.stat',0),1500);await spot(qa('.stat',4),1500);for(let i=0;i<5;i++){await spot(qa('.card',i),1250);} });
+    "This is not battery monitoring — it's a partially observable decision problem. Triple the electric power, hard eligibility thresholds, a finite reserve, a rival who responds, and hard legality constraints.",
+    async()=>{await spot(qa('.stat',0),800);for(let i=0;i<5;i++){await spot(qa('.card',i),550);} });
 
   await runStep(2,
-    "Our answer starts with one number — the Energy Shadow Price. It measures how much competitive value the next tenth of a megajoule carries, right here, right now. And it exposes something counter-intuitive. Spending point two megajoules just before the Detection Line can beat spending point three on the longest straight — because crossing that line inside the gap arms an Overtake lap.",
-    async()=>{await spot(document.querySelector('.formula'),2600);await spot(document.querySelector('.spbar'),2000);await spot(document.querySelector('.insight'),2600);});
+    "Our core idea is one number: the Energy Shadow Price — what the next tenth of a megajoule is worth, right here. It's why spending point two megajoules before the Detection Line can beat point three on the longest straight.",
+    async()=>{await spot(document.querySelector('.formula'),1600);await spot(document.querySelector('.insight'),1800);});
 
   await runStep(3,
-    "Here's the architecture we'll build in the twenty-four hour window. A real telemetry replay and the F I A rule configuration flow into three transparent models — a simulated energy twin, a rival belief filter, and the shadow price. A rule-masked beam planner then searches only legal futures, five to six mini-sectors deep, and returns a recommendation with counterfactuals — with a latency budget under two hundred and fifty milliseconds. Full-information optimization stays offline, as our oracle and benchmark.",
-    async()=>{const p=document.querySelectorAll('.pnode');for(const n of p){await spot(n,1150);} });
+    "The twenty-four hour build: real telemetry and F I A rules flow into an energy twin, a rival belief filter, and a rule-masked beam planner — recommendations inside a two hundred and fifty millisecond budget.",
+    async()=>{const p=document.querySelectorAll('.pnode');for(const n of p){await spot(n,650);} });
 
   await runStep(4,
-    "Legality will not be a penalty term. Illegal actions are removed before scoring — they never even reach the planner. The rules live in an inspectable YAML file, and we will unit test the exact regulatory boundaries: two ninety, three forty, three forty-five, three fifty, and three fifty-five kilometres per hour — plus the recharge cap and the line boundary itself.",
-    async()=>{await spot(document.querySelector('pre.yaml'),2400);await spot(document.querySelector('.maskwhy'),2200);await spot(document.querySelector('.ppcard'),2600);});
+    "Legality will be a hard mask — illegal actions never reach the planner. The rules live in inspectable YAML, unit-tested at every regulatory boundary.",
+    async()=>{await spot(document.querySelector('.maskwhy'),1400);await spot(document.querySelector('.ppcard'),1500);});
 
   await runStep(5,
-    "And the rival? We won't guess. The engine maintains a belief over four hidden types — conserving, balanced, deploying, and derating — updated every twenty metres from observable evidence like pace residuals and brake-point movement. It's a bounded, practical Bayesian game, anchored in peer-reviewed energy game theory — not a black box.",
-    async()=>{await spot(qa('#s5 .belief-row',2),2200);await spot(document.querySelector('.cite'),2800);});
+    "And the rival is a belief, not a guess: four hidden types, updated every twenty metres — a bounded Bayesian game, anchored in peer-reviewed energy game theory.",
+    async()=>{await spot(qa('#s5 .belief-row',2),1300);await spot(document.querySelector('.cite'),1500);});
 
-  /* ---- the concept demo, fully choreographed ---- */
+  /* ---- concept demo, compressed choreography ---- */
   if(!apActive)return;
   await goSlide(6);
   selectScenario('british');
-  await speak("Now, a working preview of the concept. What you're watching is a scripted simulation of the engine we'll build — the position change is real telemetry, but every energy number is an illustrative simulation, and it's labelled that way on screen. British Grand Prix Sprint, Hamilton leading Antonelli, laps seven and eight. The track is coloured by the Energy Shadow Price. Let's play.");
+  await speak("Now the concept in action — a scripted preview of the planned engine, labelled simulated on screen. British Sprint, Hamilton leading Antonelli, the track coloured by the shadow price. Let's play.");
   await apCur.click($('#btnPlay'));
-  await speak("Antonelli is one point four seconds back. The engine would recommend harvesting through the cheap sectors — rebuilding reserve while the shadow price is low.");
+  await apCur.click($('#btnSpeed'));
+  await speak("The engine harvests through the cheap sectors, rebuilding reserve while energy is cheap.");
   await waitFor(()=>doneM[0]&&!playing);
   if(apActive){
     await apCur.moveTo($('#cfPanel'));
-    await speak("First decision point — the planner pauses before the Detection Line, one point one two seconds behind. Look at the choices. Holding is safe, but converts detection only thirty-one percent of the time. A full attack converts at seventy-nine — and drains the reserve to its lowest. Detection Push is the sweet spot: just point one eight megajoules for a seventy-four percent conversion, with the reserve protected. That is the shadow price doing its job.");
+    await speak("Decision one, before the Detection Line. Detection Push spends just point one eight megajoules for a seventy-four percent conversion, reserve protected — that's the shadow price working.");
     setPlay(true);
-    await speak("Watch the gap at the line... zero point nine three seconds — inside the one-second detection gap. Overtake is armed for lap eight.");
-    await speak("Into lap eight, the map recomputes — the shadow price now peaks at the attack zone. The engine holds, keeping the gap under a second, while the belief filter watches the rival burn energy defending.");
+    await speak("Point nine three at the line — Overtake armed for lap eight.");
+    await speak("The map recomputes; the engine holds under a second while the rival burns energy defending.");
   }
   await waitFor(()=>doneM[1]&&!playing);
   if(apActive){
     await apCur.moveTo($('#cfPanel'));
-    await speak("Lap eight, decision point two. The belief filter now reads Hamilton as derating — he's spent energy defending. A legal attack at the observed pass point carries a sixty-eight percent pass probability. E-Delta says go.");
+    await speak("Decision two: Hamilton is derating. A legal attack at the observed pass point — sixty-eight percent. Go.");
     setPlay(true);
   }
   await waitFor(()=>passed);
   if(apActive){
-    await speak("And there it is — P two to P one, exactly where the real telemetry shows the position change, at four point five seven five kilometres. To be clear: the real pass anchors the realism of the scenario. The energy numbers are a transparent, labelled simulation — we never claim to read the real battery.");
-    tscale=6;
-    await waitFor(()=>ended,40000);
-    tscale=3;
-    await speak("One detection conversion. One legal pass. Zero rule violations. That is the behaviour our twenty-four hour build has to reproduce.");
+    await speak("P two to P one, exactly where the real telemetry shows it. The pass is real — the energy numbers are a labelled simulation.");
+    await waitFor(()=>ended,30000);
+    await speak("Zero rule violations — the behaviour our twenty-four hour build has to reproduce.");
     setPlay(false);
   }
 
-  /* ---- second scenario: Spa generalization ---- */
+  /* ---- Spa: 40-second generalization beat ---- */
   if(apActive){
     await apCur.click(document.querySelector('.scntab[data-scn="spa"]'));
-    await sleep(900);
-    await speak("And because the promise of E-Delta is that the architecture transfers — here is the same engine, and the same duel, pointed at Spa. Our bucket-six stress test. Watch the shadow price map: the value has moved to the Kemmel straight and to a long elevation harvest that Silverstone simply doesn't have.");
+    await sleep(700);
     await apCur.click($('#btnPlay'));
+    await speak("Same engine, same duel — Spa, our bucket-six stress test. The value map moves to Kemmel and the long elevation harvest.");
     await waitFor(()=>doneM[0]&&!playing);
     if(apActive){
-      await apCur.moveTo($('#cfPanel'));
-      await speak("Approaching Raidillon, the engine holds in the tow and spends nothing before the crest — then recommends the full legal deployment down Kemmel, where the map now peaks. Attacking before the crest would waste it. Same decision logic, completely different plan.");
+      await speak("Hold in the tow, then full deployment down Kemmel — same logic, completely different plan.");
       setPlay(true);
-      await waitFor(()=>passed,60000);
-      await speak("An illustrative pass on Kemmel — then the bucket-six payoff: a long elevation-assisted harvest. Different circuit, different tactics, one architecture.");
-      tscale=6;
-      await waitFor(()=>ended,60000);
-      tscale=3;
+      await waitFor(()=>passed,30000);
+      await speak("Different circuit, different tactics, one architecture.");
       setPlay(false);
     }
   }
 
   await runStep(7,
-    "How will we prove it works? We'll commit to acceptance targets before writing a line of code: zero tolerated rule violations, a two hundred and fifty millisecond latency budget, calibrated pass probabilities, and sensitivity tests on gap error and energy error — benchmarked against three baselines.",
-    async()=>{await spot(qa('.vtile',0),1700);await spot(qa('.vtile',3),1700);await spot(document.querySelector('.provlegend'),2000);});
+    "We'll commit to acceptance targets before writing a line of code: zero rule violations, the latency budget, calibrated probabilities, sensitivity tests — against three baselines.",
+    async()=>{await spot(qa('.vtile',0),1000);await spot(qa('.vtile',5),1000);});
 
   await runStep(8,
-    "And it generalizes. Circuits cluster into six tactical archetypes, from power circuits to high elevation tracks. The decision architecture transfers between them — what changes is the shadow price map. Silverstone versus Spa is our deliberate stress test.",
-    async()=>{await spot(document.querySelector('.bucket.demo'),2000);await spot(qa('.bucket',5),1800);await spot(document.querySelector('.genline'),1800);});
+    "Circuits cluster into six tactical archetypes. The architecture transfers — the shadow-price map is what changes.",
+    async()=>{await spot(document.querySelector('.bucket.demo'),1100);await spot(qa('.bucket',5),1000);});
 
   await runStep(9,
-    "Just as important is what we deliberately don't claim. No battery telepathy. No over-claimed validation. No live equilibrium solving. And no large language model anywhere in the decision loop — every recommendation is deterministic, reproducible, and testable.",
-    async()=>{for(let i=0;i<6;i++){await spot(qa('.hcard',i),1350);} });
+    "And what we deliberately won't claim: no battery telepathy, no over-claimed validation, no live equilibrium solving, and no large language model in the decision loop.",
+    async()=>{for(let i=0;i<4;i++){await spot(qa('.hcard',i),650);} });
 
   await runStep(10,
-    "So. Formula One teams already know how much energy they have. After our twenty-four hours, E-Delta will tell them what the next tenth of a megajoule is worth — and recommend only legal ways to spend it. We're Team E-Delta. Thank you for watching.",
-    async()=>{await spot(document.querySelector('.closepitch'),3000);});
+    "F1 teams know how much energy they have. E-Delta will tell them what the next tenth of a megajoule is worth. We're Team E-Delta — thank you.",
+    async()=>{await spot(document.querySelector('.closepitch'),1800);});
 
   window.__apDone=true;
   stopAutopilot();
 }
 function stopAutopilot(){
   apActive=false;
+  tscale=3;$('#btnSpeed').textContent='1×';
   if('speechSynthesis' in window)speechSynthesis.cancel();
   document.body.classList.remove('ap');
   apEl.style.display='none';$('#apBadge').style.display='none';$('#keyhint').style.display='';
